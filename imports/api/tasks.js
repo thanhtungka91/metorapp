@@ -7,10 +7,18 @@ import { HTTP } from 'meteor/http';
 if (Meteor.isServer) {
   // This code only runs on the server
   Meteor.publish('tasks', function tasksPublication() {
-    return Tasks.find();
+    return Tasks.find({
+      $or: [{
+        private: {
+          $ne: true
+        }
+      }, {
+        owner: this.userId
+      }, ],
+    });
   });
 }
- 
+
  
 Meteor.methods({
   'tasks.insert' (text) {
@@ -47,6 +55,24 @@ Meteor.methods({
     });
   },
 
+// Add them phan public / private 
+  'tasks.setPrivate' (taskId, setToPrivate) {
+    check(taskId, String);
+    check(setToPrivate, Boolean);
+ 
+    const task = Tasks.findOne(taskId);
+ 
+    // Make sure only the task owner can make a task private
+    if (task.owner !== Meteor.userId()) {
+      throw new Meteor.Error('not-authorized');
+    }
+ 
+    Tasks.update(taskId, {
+      $set: {
+        private: setToPrivate
+      }
+    });
+  },
   // test method 
 
   'tasks.test' (testMethod) {

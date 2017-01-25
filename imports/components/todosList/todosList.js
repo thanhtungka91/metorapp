@@ -85,6 +85,10 @@ class Task {
     Meteor.call('tasks.remove', task._id);
   }
 
+  setPrivate(task) {
+    Meteor.call('tasks.setPrivate', task._id, !task.private);
+  }
+
 }
  // export to template which is used on main html 
 export default angular.module('todos', [

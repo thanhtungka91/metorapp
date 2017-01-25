@@ -20,12 +20,17 @@
 <ul>
   <li ng-bind = "$ctrl.test">
   </li>
-  <li ng-repeat="task in $ctrl.tasks" ng-class="{'checked': task.checked}" ng-show="$ctrl.currentUser">
+  <li ng-repeat="task in $ctrl.tasks" ng-class="{'checked': task.checked}" ng-show="{'checked': task.checked, 'private': task.private} ">
   	<button class="delete" ng-click="$ctrl.removeTask(task)">delete</button>
     <input type="checkbox" ng-checked="task.checked" ng-click="$ctrl.setChecked(task)" class="toggle-checked"/>
     <span class="text" >
       <strong>{{task.username}}</strong> - {{task.text}}
       <!-- {{task.name}} -->
     </span>
+
+    <button class="toggle-private" ng-click="$ctrl.setPrivate(task)" ng-show="task.owner === $ctrl.currentUser._id">
+      {{task.private == true ? "Private" : "Public"}}
+    </button>
+
   </li>
 </ul>
