@@ -8,12 +8,12 @@ class Task {
   constructor($scope) {
     $scope.viewModel(this);
 
-    this.subscribe('tasks');
+    this.subscribe('tasks_vl');
     // cai nay duoc su dung trong view?
     this.hideCompleted = false;
 
     this.helpers({
-      tasks() {
+      tasks : function(){
         const selector = {};
 
         // If hide completed is checked, filter tasks
@@ -22,7 +22,6 @@ class Task {
             $ne: true
           };
         }
-
         // Show newest tasks at the top
         // here is default for get list tasks?
         return Tasks.find(selector, {
@@ -31,9 +30,9 @@ class Task {
           }
         });
       },
-      // thang nay van nam trong list full task
-      // tao them thang nay de lam gi 
-      // phai cong nhan la thang design kinh khung thiet 
+
+      // get the count of incomplete
+      // 2 thang nay chua thay dung den khi tra ve
 
       incompleteCount() {
         return Tasks.find({
@@ -42,13 +41,13 @@ class Task {
           }
         }).count();
       },
-      //  Get current user 
+      //  Get current user
       currentUser() {
         return Meteor.user();
       },
 
-      // i see nothing is simple but y need to try 
-      // no way 
+      // i see nothing is simple but y need to try
+      // no way
 
       test(){
         return 'just string';
@@ -59,11 +58,11 @@ class Task {
   }
   
 // add new method to here 
-  testMethod(testMethod){
-
-    Meteor.call('task.test', testMethod);
-
-  }
+//   testMethod(testMethod){
+//
+//     Meteor.call('task.test', testMethod);
+//
+//   }
 
   addTask(newTask) {
     // Insert a task into the collection
