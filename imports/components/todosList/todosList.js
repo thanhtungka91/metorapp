@@ -7,6 +7,8 @@ import { Meteor } from 'meteor/meteor';
 class Task {
   constructor($scope) {
     $scope.viewModel(this);
+
+    this.subscribe('tasks');
     // cai nay duoc su dung trong view?
     this.hideCompleted = false;
 
