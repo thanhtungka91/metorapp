@@ -57,7 +57,7 @@ class Abc {
 
 // delete the task 
   removeTask(task) {
-    Meteor.call('tasks.remove', task._id;
+    Meteor.call('tasks.remove', task._id);
   }
 
 }
