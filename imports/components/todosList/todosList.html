@@ -18,6 +18,8 @@
 </header>
  
 <ul>
+  <li ng-bind = "$ctrl.test">
+  </li>
   <li ng-repeat="task in $ctrl.tasks" ng-class="{'checked': task.checked}" ng-show="$ctrl.currentUser">
   	<button class="delete" ng-click="$ctrl.removeTask(task)">delete</button>
     <input type="checkbox" ng-checked="task.checked" ng-click="$ctrl.setChecked(task)" class="toggle-checked"/>

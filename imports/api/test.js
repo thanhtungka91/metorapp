@@ -38,21 +38,5 @@ Meteor.methods({
       }
     });
   },
-
   // test method 
-
-  'tasks.test' (testMethod) {
-    check(taskId, String);
-    this.unblock();
-    try {
-      var result = 'here is method';
-      console.log(result);
-      return true;
-    } catch (e) {
-      // Got a network error, time-out or HTTP error in the 400 or 500 range.
-      return false;
-    }
-  },
-  // for add new method here
-
 });

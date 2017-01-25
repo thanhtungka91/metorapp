@@ -2,8 +2,9 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import template from './todosList.html';
 import { Tasks } from '../../api/tasks.js';
- import { Meteor } from 'meteor/meteor';
-class Abc {
+import { Meteor } from 'meteor/meteor';
+
+class Task {
   constructor($scope) {
     $scope.viewModel(this);
     // cai nay duoc su dung trong view?
@@ -28,7 +29,10 @@ class Abc {
           }
         });
       },
-      // thang nay van nam trong list full tas
+      // thang nay van nam trong list full task
+      // tao them thang nay de lam gi 
+      // phai cong nhan la thang design kinh khung thiet 
+
       incompleteCount() {
         return Tasks.find({
           checked: {
@@ -39,10 +43,25 @@ class Abc {
       //  Get current user 
       currentUser() {
         return Meteor.user();
+      },
+
+      // i see nothing is simple but y need to try 
+      // no way 
+
+      test(){
+        return 'just string';
       }
+
+
     })
   }
-  // add new task 
+  
+// add new method to here 
+  testMethod(testMethod){
+
+    Meteor.call('task.test', testMethod);
+
+  }
 
   addTask(newTask) {
     // Insert a task into the collection
@@ -71,7 +90,7 @@ export default angular.module('todos', [
 ])
   .component('todos', {
     templateUrl: 'imports/components/todosList/todosList.html',
-    controller: ['$scope', Abc]
+    controller: ['$scope', Task]
   });
   // o day no add Abc vao todos 
   // con no lam gi minh van chua ro 
