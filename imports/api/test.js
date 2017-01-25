@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 export const Tasks = new Mongo.Collection('tasks');
-import { HTTP } from 'meteor/http'
+// import { HTTP } from 'meteor/http'
  
 Meteor.methods({
   'tasks.insert' (text) {
