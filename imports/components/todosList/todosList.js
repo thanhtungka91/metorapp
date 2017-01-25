@@ -7,6 +7,8 @@ import { Meteor } from 'meteor/meteor';
 class Task {
   constructor($scope) {
     $scope.viewModel(this);
+
+    this.subscribe('tasks');
     // cai nay duoc su dung trong view?
     this.hideCompleted = false;
 
@@ -81,6 +83,10 @@ class Task {
 // delete the task 
   removeTask(task) {
     Meteor.call('tasks.remove', task._id);
+  }
+
+  setPrivate(task) {
+    Meteor.call('tasks.setPrivate', task._id, !task.private);
   }
 
 }

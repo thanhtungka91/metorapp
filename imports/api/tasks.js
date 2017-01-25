@@ -2,7 +2,23 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 export const Tasks = new Mongo.Collection('tasks');
-import { HTTP } from 'meteor/http'
+import { HTTP } from 'meteor/http';
+
+if (Meteor.isServer) {
+  // This code only runs on the server
+  Meteor.publish('tasks', function tasksPublication() {
+    return Tasks.find({
+      $or: [{
+        private: {
+          $ne: true
+        }
+      }, {
+        owner: this.userId
+      }, ],
+    });
+  });
+}
+
  
 Meteor.methods({
   'tasks.insert' (text) {
@@ -25,12 +41,25 @@ Meteor.methods({
   'tasks.remove' (taskId) {
 //viec chek o day xem co gia tri hay khong ma thoi ko line quan gi den van de inter tca 
     check(taskId, String);
+    // get tassk before
+    const task = Tasks.findOne(taskId);
+    if (task.private && task.owner !== Meteor.userId()) {
+      // If the task is private, make sure only the owner can delete it
+      throw new Meteor.Error('not-authorized');
+    }
+
     Tasks.remove(taskId);
   },
   // Edit Task 
   'tasks.setChecked' (taskId, setChecked) {
     check(taskId, String);
     check(setChecked, Boolean);
+
+    const task = Tasks.findOne(taskId);
+    if (task.private && task.owner !== Meteor.userId()) {
+      // If the task is private, make sure only the owner can check it off
+      throw new Meteor.Error('not-authorized');
+    }
  
     Tasks.update(taskId, {
       $set: {
@@ -39,6 +68,24 @@ Meteor.methods({
     });
   },
 
+// Add them phan public / private 
+  'tasks.setPrivate' (taskId, setToPrivate) {
+    check(taskId, String);
+    check(setToPrivate, Boolean);
+ 
+    const task = Tasks.findOne(taskId);
+ 
+    // Make sure only the task owner can make a task private
+    if (task.owner !== Meteor.userId()) {
+      throw new Meteor.Error('not-authorized');
+    }
+ 
+    Tasks.update(taskId, {
+      $set: {
+        private: setToPrivate
+      }
+    });
+  },
   // test method 
 
   'tasks.test' (testMethod) {
